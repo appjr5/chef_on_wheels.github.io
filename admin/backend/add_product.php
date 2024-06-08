@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Execute the statement
                 if ($stmt->execute()) {
+                    header('location:../add_product.php?success=1');
                     echo "Product added successfully.";
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;

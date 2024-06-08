@@ -8,7 +8,7 @@
         <tr>
           <th>Order ID</th>
           <th>Order Time</th>
-          <th>Product ID</th>
+          <!-- <th>Product ID</th>/ -->
           <th>Product Name</th>
           <th>Price</th>
         </tr>
@@ -31,7 +31,7 @@
             echo "<tr>";
             echo "<td>" . $row["order_id"] . "</td>";
             echo "<td>" . $row["order_time"] . "</td>";
-            echo "<td>" . $row["product_id"] . "</td>";
+            // echo "<td>" . $row["product_id"] . "</td>";
             echo "<td>" . $row["product_name"] . "</td>";
             echo "<td>$" . $row["price"] . "</td>";
             echo "</tr>";

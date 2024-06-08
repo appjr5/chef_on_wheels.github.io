@@ -2,6 +2,8 @@
     session_start();
     $name =$_SESSION['name'];
     $user_id=$_SESSION['user_id'];
+    $role=$_SESSION['role'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,9 +29,11 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .content {
-      padding: 20px;
-      overflow: auto;
+      padding: 20px;   
+      overflow-y:auto;
+      max-height:100vh;
     }
+    
   </style>
 </head>
 <body>
@@ -39,17 +43,31 @@
       <div class="col-md-3 sidebar">
         <h2>Admin Dashboard</h2>
         <ul>
+          
           <li><a href="home.php">Dashboard</a></li>
-          <li><a href="users.php">Users</a></li>
+          <?php
+          if($role=='admin'){
+          echo  '<li><a href="users.php">Users</a></li>
           <li><a href="add_users.php">add staff</a></li>
           <li><a href="product.php">Products</a></li>
           <li><a href="add_product.php">add Products</a></li>
           <li><a href="order.php">Orders</a></li>
-          <li><a href="settings.php">Settings</a></li>
+          ';
+          }
+          if($role=='cook'){
+          echo  '<li><a href="cook.php">Orders</a></li>';
+          }
+          if($role=='delivery'){
+            echo  '<li><a href="delivery.php">Orders</a></li>';
+            }
+              
+          ?>
+             <li><a href="settings.php">Settings</a></li>
+          
         </ul>
       </div>
       <div class="col-md-9">
-        <div class="content">
+        <div class="content" style="overflow-y: auto; ">
       <!-- Content -->
       
     

@@ -6,13 +6,32 @@
   <title>Restaurant Menu</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    body {
+      background-image: url('resource/HD wallpaper_ tomato, hamburger, Patty, sandwich, fast food, bun, salad, tomatoes.jpg'); /* Replace with your background image path */
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+    .navbar, .footer {
+      background-color: rgba(51, 51, 51, 0.8); /* Add transparency */
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.8); /* Add transparency */
+      padding: 20px;
+      border-radius: 10px;
+    }
     .menu-item {
       margin-bottom: 20px;
-      position: relative; /* Add relative positioning */
+      position: relative;
     }
     .menu-item img {
-      width: 200px; /* Set width for all images */
+      width: 100%; /* Set width for all images */
       height: 200px; /* Set height for all images */
       object-fit: cover;
       border-radius: 10px;
@@ -26,7 +45,7 @@
       border: 2px solid blue;
     }
     .checkbox {
-      display: none; /* Hide the checkbox */
+      display: none;
     }
     #totalDisplay {
       font-size: 20px;
@@ -38,11 +57,43 @@
     #orders th, #orders td {
       padding: 10px;
       border: 1px solid #ccc;
+      text-align: center;
+    }
+    #orders th {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+    }
+    #orders td {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: none;
+    }
+    .icon {
+      margin-right: 5px;
     }
   </style>
 </head>
 <body>
-<div class="container">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Chef On Wheels</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container my-5">
   <h1 class="mt-5 text-center">Restaurant Menu</h1>
   <form action="backend/menu.php" method="post">
     <div class="row">
@@ -79,11 +130,9 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Order ID</th>
-        <th>Order Time</th>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
+        <th><i class="fas fa-clock icon"></i>Order Time</th>
+        <th><i class="fas fa-utensils icon"></i>Product Name</th>
+        <th><i class="fas fa-dollar-sign icon"></i>Price</th>
       </tr>
     </thead>
     <tbody>
@@ -104,24 +153,28 @@
         if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>" . $row["order_id"] . "</td>";
             echo "<td>" . $row["order_time"] . "</td>";
-            echo "<td>" . $row["product_id"] . "</td>";
             echo "<td>" . $row["product_name"] . "</td>";
             echo "<td>Tsh " . $row["price"] . "</td>";
             echo "</tr>";
           }
+          
         } else {
-          echo "<tr><td colspan='5'>No orders found.</td></tr>";
+          echo "<tr><td colspan='3'>No orders found.</td></tr>";
         }
 
         $conn->close();
     }else{
         echo "your order will appear here";
-    }
+    }echo '<a class="btn btn-danger" href="../admin/actions/delete.php?order_id=' . $order_id . '">cancel the order</a>';
         ?>
     </tbody>
   </table>
+</div>
+
+<!-- Footer -->
+<div class="footer py-3 text-center">
+  <p>&copy; 2024 Chef On Wheels. All rights reserved.</p>
 </div>
 
 <!-- Bootstrap JS -->
@@ -129,7 +182,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
- document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
   const menuItems = document.querySelectorAll(".menu-item");
   var total = 0; // Move the total variable outside the event listener
   const totalDisplay = document.getElementById("totalDisplay"); // Get the total display div
@@ -145,10 +198,10 @@
       
       if (item.classList.contains("selected")) {
         total += price;
-        totalDisplay.textContent = "Total: Tsh" + total.toFixed(2); // Update total display
+        totalDisplay.textContent = "Total: Tsh " + total.toFixed(2); // Update total display
       } else { // Subtract the price if item is deselected
         total -= price;
-        totalDisplay.textContent = "Total: Tsh" + total.toFixed(2); // Update total display
+        totalDisplay.textContent = "Total: Tsh " + total.toFixed(2); // Update total display
       }
     });
   });

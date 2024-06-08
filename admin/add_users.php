@@ -14,14 +14,14 @@
 </head>
 <body>
   <div class="container">
-    <h2 class="mt-4 mb-4">Product Form</h2>
+    <h2 class="mt-4 mb-4">User Form</h2>
    <form action="../add_user.php" method="post" enctype="multipart/form-data">
       <div class="form-group">
-        <label for="name">Product Name:</label>
+        <label for="name">User Name:</label>
         <input type="text" class="form-control" id="name" name="name" required>
       </div>
       <div class="form-group">
-        <label for="email">Product Description:</label>
+        <label for="email">User email:</label>
         <input type="text" class="form-control" id="email" name="email"  required>
       </div>
       <div class="form-group">
@@ -43,9 +43,9 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="productImage">staff Image:</label>
-        <input type="file" class="form-control-file" id="productImage" name="productImage" accept="image/*" onchange="previewImage(event)" required>
-        <img id="imgPreview" src="#" alt="Product Image Preview" class="mt-2" style="max-width: 200px; display: none;">
+        <label for="UserImage">staff Image:</label>
+        <input type="file" class="form-control-file" id="UserImage" name="UserImage" accept="image/*" onchange="previewImage(event)" required>
+        <img id="imgPreview" src="#" alt="User Image Preview" class="mt-2" style="max-width: 200px; display: none;">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
