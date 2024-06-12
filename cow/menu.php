@@ -1,97 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Menu</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-image: url('resource/HD wallpaper_ tomato, hamburger, Patty, sandwich, fast food, bun, salad, tomatoes.jpg'); /* Replace with your background image path */
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-    .navbar, .footer {
-      background-color: rgba(51, 51, 51, 0.8); /* Add transparency */
-    }
-    .container {
-      background-color: rgba(0, 0, 0, 0.8); /* Add transparency */
-      padding: 20px;
-      border-radius: 10px;
-    }
-    .menu-item {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .menu-item img {
-      width: 100%; /* Set width for all images */
-      height: 200px; /* Set height for all images */
-      object-fit: cover;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .menu-item p {
-      margin-top: 10px;
-      font-size: 18px;
-    }
-    .menu-item.selected img {
-      border: 2px solid blue;
-    }
-    .checkbox {
-      display: none;
-    }
-    #totalDisplay {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    #orders {
-      margin-top: 50px;
-    }
-    #orders th, #orders td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-    #orders th {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: none;
-    }
-    #orders td {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      border: none;
-    }
-    .icon {
-      margin-right: 5px;
-    }
-  </style>
-</head>
-<body>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <a class="navbar-brand" href="#">Chef On Wheels</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
+<?php 
+include 'dashboard/dashboard.php'; 
+session_start(); // Ensure session_start is called before any output
+?>
 <!-- Main Content -->
 <div class="container my-5">
   <h1 class="mt-5 text-center">Restaurant Menu</h1>
@@ -117,7 +27,6 @@
       } else {
         echo "No menu items found.";
       }
-  
     ?>
     </div>
     <div id="totalDisplay" class="text-center mt-3">Total: Tsh 0.00</div> <!-- Div to display total -->
@@ -137,37 +46,62 @@
     </thead>
     <tbody>
       <?php
-        // Database connection
-        if(isset($_GET['order_id'])){
+      $total = 0;
+      if(isset($_GET['order_id'])){
         include_once('../config.php');
-        $order_id=$_GET['order_id'];
+        $order_id = $_GET['order_id'];
+        
+        // Check if the user_id session variable is set
+        if(isset($_SESSION["user_id"])) {
+          $user_id = $_SESSION["user_id"];
+        } else {
+          // Handle the case where user_id is not set
+          echo "<tr><td colspan='3'>User not logged in.</td></tr>";
+          exit;
+        }
+
         // Fetch orders and related items from the database
-        $sql = "SELECT o.order_id, o.order_time, oi.product_id, p.product_name, p.price
+        $sql = "SELECT o.order_id, o.order_time, oi.product_id, p.product_name, p.price, 
+                       (SELECT COUNT(*) FROM orders WHERE user_id = $user_id) AS order_count
                 FROM orders o
                 INNER JOIN order_items oi ON o.order_id = oi.order_id
                 INNER JOIN product p ON oi.product_id = p.product_id 
-                WHERE o.order_id=$order_id
-                ORDER BY o.order_id ";
+                WHERE o.order_id = $order_id 
+                AND o.user_id = $user_id
+                GROUP BY o.order_id, o.order_time, oi.product_id, p.product_name, p.price";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
+          $order_count = 0;
           while ($row = $result->fetch_assoc()) {
+            $total += $row["price"];
+            $order_count = $row["order_count"];
             echo "<tr>";
             echo "<td>" . $row["order_time"] . "</td>";
             echo "<td>" . $row["product_name"] . "</td>";
             echo "<td>Tsh " . $row["price"] . "</td>";
             echo "</tr>";
           }
-          
+
+          if($order_count > 1){
+            $discount = $total * 0.05;
+            $total -= $discount;
+            echo "<tr><td colspan='3' class='text-right'><strong>Discount: Tsh " . number_format($discount, 2) . "</strong></td></tr>";
+          }
+          echo "<tr><td colspan='3' class='text-right'><strong>Total: Tsh " . number_format($total, 2) . "</strong></td></tr>";
         } else {
           echo "<tr><td colspan='3'>No orders found.</td></tr>";
         }
 
+        echo '<tr><td colspan="3" class="text-center">';
+        echo '<a class="btn btn-danger" href="../admin/actions/delete.php?order_id=' . $order_id . '" onclick="return confirm(\'Are you sure you want to cancel this order?\')">Cancel the order</a>';
+        echo '</td></tr>';
+
         $conn->close();
-    }else{
-        echo "your order will appear here";
-    }echo '<a class="btn btn-danger" href="../admin/actions/delete.php?order_id=' . $order_id . '">cancel the order</a>';
-        ?>
+      } else {
+        echo "<tr><td colspan='3'>Your order will appear here.</td></tr>";
+      }
+      ?>
     </tbody>
   </table>
 </div>
@@ -184,29 +118,36 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const menuItems = document.querySelectorAll(".menu-item");
-  var total = 0; // Move the total variable outside the event listener
-  const totalDisplay = document.getElementById("totalDisplay"); // Get the total display div
+  let total = 0;
+  const totalDisplay = document.getElementById("totalDisplay");
 
   menuItems.forEach(item => {
     const checkbox = item.querySelector("input[type='checkbox']");
     const image = item.querySelector("img");
-    const priceText = item.querySelector(".menu-item p").textContent.trim(); // Get the text content
-    const price = parseFloat(priceText.match(/\d+(\.\d+)?/)[0]); // Extract the number using regular expression
+    const priceText = item.querySelector("p").textContent.trim();
+    const price = parseFloat(priceText.match(/\d+(\.\d+)?/)[0]);
+
+    function updateTotal(isSelected) {
+      if (isSelected) {
+        total += price;
+      } else {
+        total -= price;
+      }
+      totalDisplay.textContent = "Total: Tsh " + total.toFixed(2);
+    }
+
     image.addEventListener("click", function() {
       checkbox.checked = !checkbox.checked;
       item.classList.toggle("selected");
-      
-      if (item.classList.contains("selected")) {
-        total += price;
-        totalDisplay.textContent = "Total: Tsh " + total.toFixed(2); // Update total display
-      } else { // Subtract the price if item is deselected
-        total -= price;
-        totalDisplay.textContent = "Total: Tsh " + total.toFixed(2); // Update total display
-      }
+      updateTotal(checkbox.checked);
+    });
+
+    checkbox.addEventListener("change", function() {
+      item.classList.toggle("selected");
+      updateTotal(checkbox.checked);
     });
   });
 });
 </script>
-
 </body>
 </html>
