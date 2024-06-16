@@ -8,7 +8,7 @@ if(isset($_GET['user_id'])) {
     $result = mysqli_query($conn, $sql);
 
     if($result) {
-        header('location:../user.php?success=yes');
+        header('location:../user.php?success="deleted"');
     } else {
         echo 'The user you want to delete is immortal';
     }
@@ -18,7 +18,7 @@ if(isset($_GET['user_id'])) {
     $result = mysqli_query($conn, $sql);
 
     if($result) {
-        header('location:../product.php?success=yes');
+        header('location:../product.php?success="deleted"');
     } else {
         echo 'The product you want to delete is immortal';
     }
@@ -28,7 +28,7 @@ if(isset($_GET['user_id'])) {
     $result = mysqli_query($conn, $sql);
 
     if($result) {
-        header('location:../../cow/menu.php?success=yes');
+        header('location:../../cow/menu.php?success="deleted"');
     } else {
         echo 'The order you want to delete is immortal';
     }

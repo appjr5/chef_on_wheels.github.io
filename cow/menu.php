@@ -6,87 +6,97 @@ session_start(); // Ensure session_start is called before any output
 <div class="container my-5">
   <h1 class="mt-5 text-center">Menu</h1>
   <form action="backend/menu.php" method="post">
-  <!-- Food Section -->
-  <section id="food" class="menu-section">
-    <h2 class="mt-4 mb-3 text-center">Food</h2>
-    <div class="row">
-      <?php
-        // Database connection
-        include_once('../config.php');
+    <!-- Food Section -->
+    <section id="food" class="menu-section">
+      <h2 class="mt-4 mb-3 text-center">Food</h2>
+      <div class="row">
+        <?php
+          // Database connection
+          include_once('../config.php');
 
-        // Fetch food items from the database
-        $sql_food = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='food'";
-        $result_food = $conn->query($sql_food);
+          // Fetch food items from the database
+          $sql_food = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='food' AND visibility='visible'";
+          $result_food = $conn->query($sql_food);
 
-        if ($result_food->num_rows > 0) {
-          // Output each food item as an image
-          while($row = $result_food->fetch_assoc()) {
-            echo '<div class="menu-item col-md-4">';
-            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
-            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
-            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
-            echo '</div>';
+          if ($result_food->num_rows > 0) {
+            // Output each food item as an image
+            while($row = $result_food->fetch_assoc()) {
+              echo '<div class="menu-item col-md-4">';
+              echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+              echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+              echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+              echo '</div>';
+            }
+          } else {
+            echo "<p class='text-center'>No food items found.</p>";
           }
-        } else {
-          echo "<p class='text-center'>No food items found.</p>";
-        }
-      ?>
-    </div>
-  </section>
+        ?>
+      </div>
+    </section>
 
-  <!-- Dessert Section -->
-  <section id="dessert" class="menu-section">
-    <h2 class="mt-4 mb-3 text-center">Desserts</h2>
-    <div class="row">
-      <?php
-        // Fetch dessert items from the database
-        $sql_dessert = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='dessert'";
-        $result_dessert = $conn->query($sql_dessert);
+    <!-- Dessert Section -->
+    <section id="dessert" class="menu-section">
+      <h2 class="mt-4 mb-3 text-center">Desserts</h2>
+      <div class="row">
+        <?php
+          // Fetch dessert items from the database
+          $sql_dessert = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='dessert' AND visibility='visible'";
+          $result_dessert = $conn->query($sql_dessert);
 
-        if ($result_dessert->num_rows > 0) {
-          // Output each dessert item as an image
-          while($row = $result_dessert->fetch_assoc()) {
-            echo '<div class="menu-item col-md-4">';
-            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
-            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
-            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
-            echo '</div>';
+          if ($result_dessert->num_rows > 0) {
+            // Output each dessert item as an image
+            while($row = $result_dessert->fetch_assoc()) {
+              echo '<div class="menu-item col-md-4">';
+              echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+              echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+              echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+              echo '</div>';
+            }
+          } else {
+            echo "<p class='text-center'>No dessert items found.</p>";
           }
-        } else {
-          echo "<p class='text-center'>No dessert items found.</p>";
-        }
-      ?>
-    </div>
-  </section>
+        ?>
+      </div>
+    </section>
 
-  <!-- Drinks Section -->
-  <section id="drinks" class="menu-section">
-    <h2 class="mt-4 mb-3 text-center">Drinks</h2>
-    <div class="row">
-      <?php
-        // Fetch drink items from the database
-        $sql_drinks = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='drink'";
-        $result_drinks = $conn->query($sql_drinks);
+    <!-- Drinks Section -->
+    <section id="drinks" class="menu-section">
+      <h2 class="mt-4 mb-3 text-center">Drinks</h2>
+      <div class="row">
+        <?php
+          // Fetch drink items from the database
+          $sql_drinks = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='drink' AND visibility='visible'";
+          $result_drinks = $conn->query($sql_drinks);
 
-        if ($result_drinks->num_rows > 0) {
-          // Output each drink item as an image
-          while($row = $result_drinks->fetch_assoc()) {
-            echo '<div class="menu-item col-md-4">';
-            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
-            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
-            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
-            echo '</div>';
+          if ($result_drinks->num_rows > 0) {
+            // Output each drink item as an image
+            while($row = $result_drinks->fetch_assoc()) {
+              echo '<div class="menu-item col-md-4">';
+              echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+              echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+              echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+              echo '</div>';
+            }
+          } else {
+            echo "<p class='text-center'>No drink items found.</p>";
           }
-        } else {
-          echo "<p class='text-center'>No drink items found.</p>";
-        }
 
-        // Close the database connection
-      ?>
-    </div>
-  </section>
+          // Close the database connection
+          // $conn->close();
+        ?>
+      </div>
+    </section>
     <div id="totalDisplay" class="text-center mt-3">Total: Tsh 0.00</div> <!-- Div to display total -->
-    <button type="submit" class="btn btn-primary mt-3 btn-block">Submit Order</button>
+    <?php
+      if (isset($_SESSION['user_id'])) {
+        // echo $_SESSION['user_id'];
+        // If user is logged in, show the submit order button
+        echo '<button type="submit" class="btn btn-primary mt-3 btn-block">Submit Order</button>';
+      } else {
+        // If user is not logged in, show the login button
+        echo '<a href="../login.php" class="btn btn-primary mt-3 btn-block">Login to Submit Order</a>';
+      }
+    ?>
   </form>
 </div>
 
@@ -204,6 +214,43 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 });
-</script>
+
+function showMessageModal(message) {
+    const modalBody = $('#messageModal').find('.modal-body');
+    modalBody.html(message);
+    $('#messageModal').modal('show');
+}
+
+$(document).ready(function() {
+    const params = new URLSearchParams(window.location.search);
+    const successMessage = params.get('success');
+    if (successMessage) {
+        showMessageModal(successMessage);
+    }
+});
+
+
+  </script>
+<!-- Modal for Success or Error Messages -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messageModalLabel">Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <p id="messageModal"></p>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

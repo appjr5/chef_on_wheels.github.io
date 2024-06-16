@@ -14,6 +14,17 @@
 </head>
 <body>
   <div class="container">
+  <?php
+// Check if the success parameter is set in the query string
+if (isset($_GET['success'])) {
+    echo '<div class="alert alert-success" role="alert">' . htmlspecialchars($_GET['success']) . '</div>';
+}
+
+// Check if the error parameter is set in the query string
+if (isset($_GET['error'])) {
+    echo '<div class="alert alert-danger" role="alert">' . htmlspecialchars($_GET['error']) . '</div>';
+}
+?>
     <h2 class="mt-4 mb-4">User Form</h2>
    <form action="../add_user.php" method="post" enctype="multipart/form-data">
       <div class="form-group">

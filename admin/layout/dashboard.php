@@ -63,7 +63,7 @@ if (empty($user_id) || empty($role)) {
               echo '<li><a href="delivery.php">Orders</a></li>';
           }
           ?>
-          <li><a href="settings.php">Settings</a></li>
+          <li><a href="../logout.php">logout</a></li>
         </ul>
       </div>
       <div class="col-md-9">

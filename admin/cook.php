@@ -2,6 +2,17 @@
 <!-- Content -->
 <div class="container-fluid">
   <h2>Orders Table</h2>
+  <?php
+// Check if the success parameter is set in the query string
+if (isset($_GET['success'])) {
+    echo '<div class="alert alert-success" role="alert">' . htmlspecialchars($_GET['success']) . '</div>';
+}
+
+// Check if the error parameter is set in the query string
+if (isset($_GET['error'])) {
+    echo '<div class="alert alert-danger" role="alert">' . htmlspecialchars($_GET['error']) . '</div>';
+}
+?>
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
