@@ -31,8 +31,8 @@ elseif($row['role']==NULL){
 }
 } else {
     // Invalid email or password, redirect back to login page with error message
-    $_SESSION['error'] = "Invalid email or password";
-    header("Location: login.php");
+    // $_SESSION['error'] = "Invalid email or password";
+    header("Location: login.php?success='Invalid email or password'");
 }
 
 // Close connection

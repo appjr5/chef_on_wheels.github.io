@@ -4,31 +4,87 @@ session_start(); // Ensure session_start is called before any output
 ?>
 <!-- Main Content -->
 <div class="container my-5">
-  <h1 class="mt-5 text-center">Restaurant Menu</h1>
+  <h1 class="mt-5 text-center">Menu</h1>
   <form action="backend/menu.php" method="post">
+  <!-- Food Section -->
+  <section id="food" class="menu-section">
+    <h2 class="mt-4 mb-3 text-center">Food</h2>
     <div class="row">
-    <?php
-      // Database connection
-      include_once('../config.php');
+      <?php
+        // Database connection
+        include_once('../config.php');
 
-      // Fetch menu items from the database
-      $sql = "SELECT product_id, product_name, product_image, price FROM product";
-      $result = $conn->query($sql);
+        // Fetch food items from the database
+        $sql_food = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='food'";
+        $result_food = $conn->query($sql_food);
 
-      if ($result->num_rows > 0) {
-        // Output each menu item as an image
-        while($row = $result->fetch_assoc()) {
-          echo '<div class="menu-item col-md-4">';
-          echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
-          echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
-          echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
-          echo '</div>';
+        if ($result_food->num_rows > 0) {
+          // Output each food item as an image
+          while($row = $result_food->fetch_assoc()) {
+            echo '<div class="menu-item col-md-4">';
+            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+            echo '</div>';
+          }
+        } else {
+          echo "<p class='text-center'>No food items found.</p>";
         }
-      } else {
-        echo "No menu items found.";
-      }
-    ?>
+      ?>
     </div>
+  </section>
+
+  <!-- Dessert Section -->
+  <section id="dessert" class="menu-section">
+    <h2 class="mt-4 mb-3 text-center">Desserts</h2>
+    <div class="row">
+      <?php
+        // Fetch dessert items from the database
+        $sql_dessert = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='dessert'";
+        $result_dessert = $conn->query($sql_dessert);
+
+        if ($result_dessert->num_rows > 0) {
+          // Output each dessert item as an image
+          while($row = $result_dessert->fetch_assoc()) {
+            echo '<div class="menu-item col-md-4">';
+            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+            echo '</div>';
+          }
+        } else {
+          echo "<p class='text-center'>No dessert items found.</p>";
+        }
+      ?>
+    </div>
+  </section>
+
+  <!-- Drinks Section -->
+  <section id="drinks" class="menu-section">
+    <h2 class="mt-4 mb-3 text-center">Drinks</h2>
+    <div class="row">
+      <?php
+        // Fetch drink items from the database
+        $sql_drinks = "SELECT product_id, product_name, product_image, price FROM product WHERE product_type='drink'";
+        $result_drinks = $conn->query($sql_drinks);
+
+        if ($result_drinks->num_rows > 0) {
+          // Output each drink item as an image
+          while($row = $result_drinks->fetch_assoc()) {
+            echo '<div class="menu-item col-md-4">';
+            echo '<input type="checkbox" class="checkbox" name="selected_items[]" value="' . $row["product_id"] . '">';
+            echo '<img src="../admin/uploads/' . $row["product_image"] . '" alt="' . $row["product_name"] . '">';
+            echo '<p>' . $row["product_name"] . '<br> Tsh ' . $row["price"] . '</p>';
+            echo '</div>';
+          }
+        } else {
+          echo "<p class='text-center'>No drink items found.</p>";
+        }
+
+        // Close the database connection
+      ?>
+    </div>
+  </section>
     <div id="totalDisplay" class="text-center mt-3">Total: Tsh 0.00</div> <!-- Div to display total -->
     <button type="submit" class="btn btn-primary mt-3 btn-block">Submit Order</button>
   </form>

@@ -1,7 +1,6 @@
 <?php include('layout/dashboard.php'); ?>
 <!-- Content -->
-<div class="col-md-9">
-    <div class="content">
+
         <h2>User Table</h2>
         <table class="table">
             <thead>
@@ -35,7 +34,7 @@
                     <td>' . $row['price'] . '</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-primary" href="#">Edit</a>
+                            <a class="btn btn-primary" href="backend/visible.php">visible</a>
                             <a class="btn btn-danger" href="actions/delete.php?product_id=' . $row['product_id'] . '">Delete</a>
                         </div>
                     </td>

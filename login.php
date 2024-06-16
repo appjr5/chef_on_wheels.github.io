@@ -24,6 +24,15 @@
             text-align: center;
         }
 
+        .message {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
         h2 {
             color: #333;
         }
@@ -63,9 +72,14 @@
 </head>
 <body>
     <div class="container">
+        <?php if (isset($_GET['success'])): ?>
+        <div class="message" id="message">
+            <?php echo htmlspecialchars($_GET['success']); ?>
+        </div>
+        <?php endif; ?>
         <h2>Login</h2>
         <form action="authenticate_user.php" method="post">
-            <input type="text" name="email" placeholder="email" required><br>
+            <input type="text" name="email" placeholder="Email" required><br>
             <input type="password" name="password" placeholder="Password" required><br>
             <input type="submit" value="Login">
         </form>
@@ -73,5 +87,15 @@
             <a href="register.php">Register</a>
         </div>
     </div>
+    
+    <script>
+        // Hide the message div after 5 seconds
+        setTimeout(function() {
+            var messageDiv = document.getElementById('message');
+            if (messageDiv) {
+                messageDiv.style.display = 'none';
+            }
+        }, 5000);
+    </script>
 </body>
 </html>

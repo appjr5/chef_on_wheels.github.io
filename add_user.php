@@ -18,8 +18,8 @@ else{
 $sql = "INSERT INTO users (name, email, phone, zip_code, role, password) VALUES ('$name', '$email', '$phone', '$zip_code', '$role', '$password')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-    // header('location:login.php');
+    // echo "New record created successfully";
+    header('location:login.php?success="new user create, login"');
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
